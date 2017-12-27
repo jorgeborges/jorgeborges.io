@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'JB Starter Blog',
+    title: 'JB Starter Blog EX',
     author: 'Jorge A. Borges',
     description: 'A starter blog demonstrating what Gatsby can do.',
     siteUrl: 'http://jorgeborges.io/',
