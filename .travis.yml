@@ -1,25 +1,24 @@
 language: node_js
-
 os:
   - linux
-
 node_js:
-  - "8"
-
+  - '8'
 cache: yarn
-
 branches:
   only:
   - master
-
 git:
   depth: false
-
+install:
+  - yarn install
+  - pip install awscli
 before_script:
   - yarn global add gatsby-cli
-script: gatsby build
-
-before_deploy: echo 'Deploying to AWS S3...'
+script:
+  - gatsby build
+before_deploy:
+  - echo 'Commencing Deployment'
+  - echo 'Uploading Site to AWS S3'
 deploy:
   provider: s3
   skip_cleanup: true
@@ -29,4 +28,11 @@ deploy:
   access_key_id: AKIAJIC7FKIW6UGHMU6A
   secret_access_key:
     secure: oLczhwrpEwiVYvmqerDWJDTDszQEMFjskSL6oW8xECGjW+VCLLHekgSmYlqx8WfqtrT8+lV62aLOlV+2mUGBzuZxG+tIXc8tg0sbWOdyJ1bUFuspsv+6pJAiYIsVhw8ugC0heaOY8IUamClAWUBh3WyjZJSKTDGtDLuFjcE4NVr41kA0wfhslzy8UWFoQCFcDKwrNE4HnvjzpgUqX1p491oXK2SLC9DnC9BhMCNrfmVvWVKHiL+ZBjrQd1Vx+74enVubsRQ7gQ8Ef1Pe1dIvzDcuCj2ljbgu9A1WE60sSKPkAOuvlSmooZiOnUPGIb8Ht4gtSmwupvW4JgJebyvDEaXcIyWmpidok98ugzjdLk6qNJpXZY+d03OPtGAGZ3k2Vyr3Y3fkFRZoSPs1J/oEPpPBfB/iim4DKiDOZbFROCJRJrKBhUyUehbO2wXBx0/qoAAQawk66IdrU2Uf9m0pe9BxnyE1IMNMLDvqipCXUOzogsAVkhFjeFF/MA1T/Sdtu5M8V0Oxc3KHvWpM5xc7T3ygFJLdDInh0AXph+CnMvohYZgNe3Xe3BshGQtC8MbBozDORhxkXjyuJ6Yv19eRR3as88j0/5Deep5MJmGmTi5/KxA0IgQf/XN7k4KRCbFPrUTyK+TwlAnji164KY+qgqZg0qrtl/n9JYr2h+GgBtk=
-after_deploy: echo 'Deploy done!'
+after_deploy:
+  - echo 'Invalidating CloudFront Distribution'
+  - aws cloudfront create-invalidation --distribution-id E2E2HYHM9B9XK2 --paths '/*'
+  - echo 'Deployment Complete'
+env:
+  global:
+  - secure: obfs/Haoc8/sTaIgUHGBjZt7Hi4VucdiSjg+bjsEktH6UR+Zp5wzFYowcQ+kmU90nN++yEq+ERTFPN5M/HaC9VvHyS+9GXHXvo7Bg6wgQzJHTpnmAd1kGSZTACmwBoiverGUGVH2Z1SfDOiyY2KGoFURd7068ZIkiVfLYi+6TcIr2EKPrJFU8Pp4LFAlybj6M6oJ98omfoIIUrSrzbriEX5qfoU4MCNIZuc7w0Zarz6Cn+9DY1mAr8E9j+nEgTuc/TNrTvKEqODvXdauBhFajTXwJuZNqzPqp8HytWE9mN+sN3nfQYcfzmQ3kCeaCjjvS2KqtV2vwVuJFQsPpghUmCX4v+QauQcrUeHJ0rJWS0Ln2LVYUbmgNgj+S9y4AT+JQHAOtnVAr4VNRXuoKduDcGrm4LORWeaGwrQNUcZHWFuL3JWfwWg3HHiEq+1/hYhtzERIo2AHDgLDTD4hA/IGN6+wiEvbfGUZxfii2mP1k79wyl7ViP6EEmFBCjKVHqhPwqBZgrRkUq/n6SG44sUo29+FNXMQd4FZbdAKwmkibSiL8c7lz+NkCUNiLy0fjn5h/+3oycWFVCv0wi6TaiuHyvZwOuwhwTweRRNpCB9HOs8jeA/gJy/qO6HPhgO+kTFBGUyB1BLvWHU09ql0xxoqplq5lwBgF1lEVO759OeXE+U=
+  - secure: g1HqK0OWri77OPt7GXV3OmRjJnCyi11fXPjtg2g3ocwYv3FWve109OmbFrwjiA8BG7yl2geEoXRWxj7zA9RvkUFOKEL53Na0YkPi3JfXGKnJvOM8X6E9hMtY38EYX+dYfKpL+8pNiTv1uyHezmfhqwX23/Et/YGiiFijOXIg7vdlCWqU+wJzLvdiFe9LuAe0LNyLebb67Y/YrUvcEjS8ufkTCNtfH94gA/DSh/PdqOGPm6lf2B6hTwL7LljLPfeAuKPqcrd2ehMFY9cnyUh3RJ17CW30e1tzZPoPVfZZNhE4x7TCthZzWcEZ2/ORFRFfEH1n+Sf8gFUpjHYJZZQqx8M2e52w7bsx0QB5MMVnoXsnNKcv/KbP2neA4AdykAqfDcEjL9pAHUhRs0Ucyxovr9OWdeXWTiB1BV8n565YSpWzdeAd3dwICbpM9hR5virLCpg4Ay9TS67yqmQR4mH0+Re50nh+4cobveQy/6aQvzc6XWwVt42jPAxJiWzCQWJ2LXazuXDp25yNDdu8a64xLAEdkPYYuIpCtXS3wnqnB4MSvE6KwrmHMXO+6jzAz0JnfT9B52+TycdN2B0LTZ7t226+hpPb8+FcRK8UNl4Qk57von0siWtGpPFRHmWTTkuiiXAfzWmekuII5/j61W5lbtWEgZ5qCL+J289MHGLuI2s=
