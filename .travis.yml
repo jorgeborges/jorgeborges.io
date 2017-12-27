@@ -1,12 +1,21 @@
-sudo: false
 language: node_js
+
+os:
+  - linux
+
 node_js:
-- '8'
+  - "8"
+
 branches:
   only:
   - master
+
 git:
   depth: false
+
+script:
+  - yarn install
+
 deploy:
   provider: s3
   skip_cleanup: true
@@ -15,4 +24,3 @@ deploy:
   access_key_id: AKIAJIC7FKIW6UGHMU6A
   secret_access_key:
     secure: oLczhwrpEwiVYvmqerDWJDTDszQEMFjskSL6oW8xECGjW+VCLLHekgSmYlqx8WfqtrT8+lV62aLOlV+2mUGBzuZxG+tIXc8tg0sbWOdyJ1bUFuspsv+6pJAiYIsVhw8ugC0heaOY8IUamClAWUBh3WyjZJSKTDGtDLuFjcE4NVr41kA0wfhslzy8UWFoQCFcDKwrNE4HnvjzpgUqX1p491oXK2SLC9DnC9BhMCNrfmVvWVKHiL+ZBjrQd1Vx+74enVubsRQ7gQ8Ef1Pe1dIvzDcuCj2ljbgu9A1WE60sSKPkAOuvlSmooZiOnUPGIb8Ht4gtSmwupvW4JgJebyvDEaXcIyWmpidok98ugzjdLk6qNJpXZY+d03OPtGAGZ3k2Vyr3Y3fkFRZoSPs1J/oEPpPBfB/iim4DKiDOZbFROCJRJrKBhUyUehbO2wXBx0/qoAAQawk66IdrU2Uf9m0pe9BxnyE1IMNMLDvqipCXUOzogsAVkhFjeFF/MA1T/Sdtu5M8V0Oxc3KHvWpM5xc7T3ygFJLdDInh0AXph+CnMvohYZgNe3Xe3BshGQtC8MbBozDORhxkXjyuJ6Yv19eRR3as88j0/5Deep5MJmGmTi5/KxA0IgQf/XN7k4KRCbFPrUTyK+TwlAnji164KY+qgqZg0qrtl/n9JYr2h+GgBtk=
-script: echo 'Deploying to S3...'
